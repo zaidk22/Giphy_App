@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -19,12 +20,16 @@ class GifAdapter(val context: Context,val gifs :List<DataObject>) : RecyclerView
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
        val data = gifs[position]
         Glide.with(context).load(data.images.ogImage.url).into(holder.image)
+        holder.title.text = data.title
+
     }
 
     override fun getItemCount(): Int {
     return gifs.size
     }
     class ViewHolder(itemView : View):RecyclerView.ViewHolder(itemView) {
-val image = itemView.findViewById<ImageView>(R.id.imageView)
+
+        val image = itemView.findViewById<ImageView>(R.id.imageView)
+        val title = itemView.findViewById<TextView>(R.id.title)
     }
 }
