@@ -22,11 +22,11 @@ private lateinit var tempArrayList : MutableList<DataObject>
         setContentView(R.layout.activity_main)
 
 
-        val gifs = mutableListOf<DataObject>()
+        val gifsArrayList = mutableListOf<DataObject>()
         tempArrayList = mutableListOf<DataObject>()
-        val adapter =GifAdapter(this,tempArrayList)
-        recycler.adapter = adapter
-        recycler.setHasFixedSize(true)
+        val mAdapter =GifAdapter(this,tempArrayList)
+        recycler.adapter = mAdapter
+            recycler.setHasFixedSize(true)
         recycler.layoutManager = LinearLayoutManager(this)
 
         val retrofit = Retrofit.Builder()
@@ -42,9 +42,10 @@ private lateinit var tempArrayList : MutableList<DataObject>
                     Log.d("msg","Failed")
                 }
 
-                gifs.addAll(body!!.res)
-                tempArrayList.addAll(gifs)
-                adapter.notifyDataSetChanged()
+                gifsArrayList.addAll(body!!.res)
+
+              tempArrayList.addAll(gifsArrayList)
+            recycler!!.adapter!!.notifyDataSetChanged()
 
                 searchView.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -56,10 +57,10 @@ private lateinit var tempArrayList : MutableList<DataObject>
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         tempArrayList.clear()
-                        val searchText = newText!!.toLowerCase(Locale.getDefault())
+                        val searchText = newText!!.lowercase()
                         if (searchText.isNotEmpty()) {
-                            tempArrayList.forEach {
-                                if (it.title.toLowerCase(Locale.getDefault())
+                            gifsArrayList.forEach {
+                                if (it.title.lowercase()
                                         .contains(searchText)
                                 ) {
                                     tempArrayList.add(it)
@@ -70,7 +71,7 @@ private lateinit var tempArrayList : MutableList<DataObject>
                         }
                         else{
                             tempArrayList.clear()
-                            tempArrayList.addAll(gifs)
+                            tempArrayList.addAll(gifsArrayList)
                             recycler!!.adapter!!.notifyDataSetChanged()
                         }
                         return false
